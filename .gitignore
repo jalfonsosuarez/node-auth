@@ -1,0 +1,10 @@
+
+.vscode/
+.history/
+.env
+.prettierrc
+
+node_modules/
+
+dist/
+build/

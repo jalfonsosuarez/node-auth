@@ -5,6 +5,7 @@
 .prettierrc
 
 node_modules/
+mongo/
 
 dist/
 build/

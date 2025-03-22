@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { AuthController } from './controller';
 import { AuthDatasourceImpl, AuthRepositoryImpl } from '../../infrastructure';
+import { AuthMiddelware } from './middelwares/auth.middelware';
 
 export class AuthRoutes {
   static get routes(): Router {
@@ -14,6 +15,8 @@ export class AuthRoutes {
     router.post('/register', (req: Request, res: Response) => {
       controller.registerUser(req, res);
     });
+
+    router.get('/', [AuthMiddelware.validateJWT], controller.getUsers);
 
     return router;
   }

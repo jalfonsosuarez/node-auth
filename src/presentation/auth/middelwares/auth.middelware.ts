@@ -4,7 +4,7 @@ import { UserModel } from '../../../data/mongodb';
 
 export class AuthMiddelware {
   static validateJWT = async (req: Request, res: Response, next: NextFunction) => {
-    const authorization = req.header('AAuthorization');
+    const authorization = req.header('Authorization');
     if (!authorization) return res.status(401).json('No token provider.');
     if (!authorization.startsWith('Bearer ')) return res.status(401).json('Bearer token is not valid.');
 

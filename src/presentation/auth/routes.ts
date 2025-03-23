@@ -10,7 +10,9 @@ export class AuthRoutes {
     const authRepository = new AuthRepositoryImpl(dataSource);
     const controller = new AuthController(authRepository);
 
-    router.post('/login', controller.loginUser);
+    router.post('/login', (req: Request, res: Response) => {
+      controller.loginUser(req, res);
+    });
 
     router.post('/register', (req: Request, res: Response) => {
       controller.registerUser(req, res);

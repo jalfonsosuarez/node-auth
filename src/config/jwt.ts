@@ -1,16 +1,12 @@
-import jwt from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
 import { Envs } from './envs';
 
-const JWT_SEED = Envs.JWT_SEED;
+const JWT_SEED: Secret = Envs.JWT_SEED as Secret;
 
 export class JwtAdapter {
-  static async generateToken(payload: Object, duration: string = '2h'): Promise<string | null> {
-    return new Promise((resolve) => {
-      jwt.sign(payload, JWT_SEED, { expiresIn: duration }, (err, token) => {
-        if (err) return resolve(null);
-        resolve(token!);
-      });
-    });
+  static generateToken(payload: Object, duration: number = 60 * 60 * 2): string {
+    const token: string = jwt.sign(payload, JWT_SEED, { expiresIn: duration });
+    return token;
   }
 
   static async validateToken<T>(token: string): Promise<T | null> {

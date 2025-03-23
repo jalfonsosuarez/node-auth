@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { AuthController } from './controller';
 import { AuthDatasourceImpl, AuthRepositoryImpl } from '../../infrastructure';
 import { AuthMiddelware } from './middelwares/auth.middelware';
@@ -16,7 +16,13 @@ export class AuthRoutes {
       controller.registerUser(req, res);
     });
 
-    router.get('/', [AuthMiddelware.validateJWT], controller.getUsers);
+    router.get(
+      '/',
+      (req: Request, res: Response, next: NextFunction) => {
+        AuthMiddelware.validateJWT(req, res, next);
+      },
+      controller.getUsers,
+    );
 
     return router;
   }

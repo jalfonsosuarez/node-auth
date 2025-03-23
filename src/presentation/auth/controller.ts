@@ -3,6 +3,7 @@ import { RegisterUserDto } from '../../domain/dtos/auth/register-user.dto';
 import { AuthRepository } from '../../domain/repositories/auth.repository';
 import { CustomError } from '../../domain';
 import { UserModel } from '../../data/mongodb';
+import { JwtAdapter } from '../../config';
 
 export class AuthController {
   constructor(private readonly authRepository: AuthRepository) {}
@@ -22,7 +23,12 @@ export class AuthController {
     if (error) return res.status(400).json({ error });
     this.authRepository
       .register(registerUserDto!)
-      .then((user) => res.json(user))
+      .then((user) =>
+        res.json({
+          user,
+          token: JwtAdapter.generateToken({ id: user.id }),
+        }),
+      )
       .catch((error) => this.handleError(error, response));
   };
 
